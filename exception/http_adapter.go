@@ -4,7 +4,7 @@ import "net/http"
 
 // ToHTTPStatus converts an AppError code to an HTTP status code
 func (e *codeError) HTTPCode() int {
-	switch e.code {
+	switch e.status {
 	case CodeInternal:
 		return http.StatusInternalServerError // 500
 	case CodeInvalidRequest:

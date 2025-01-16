@@ -56,7 +56,7 @@ type codeError struct {
 }
 
 func (e *codeError) Error() string {
-	return e.error.Error()
+	return e.Code() + ": " + e.error.Error()
 }
 
 // Code returns the error code
@@ -77,7 +77,7 @@ func (e *codeError) Unwrap() error {
 // NewError creates a new error with the provided options
 func NewCustomError(status string, code string, message string, err error) error {
 	if err == nil {
-		err = errors.New(status)
+		err = errors.New(message)
 	}
 	return &codeError{
 		status:  status,

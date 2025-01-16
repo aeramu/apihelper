@@ -89,12 +89,12 @@ func (e *ErrorInfo) Error() string {
 		return ""
 	}
 	if e.Details != nil {
-		return fmt.Sprintf("%s (%s): %v", e.Message, e.Code, e.Details)
+		return fmt.Sprint(e.Details)
 	}
 	if e.Code == "" {
 		return e.Message
 	}
-	return fmt.Sprintf("%s (%s)", e.Message, e.Code)
+	return fmt.Sprintf("%s: %s", e.Code, e.Message)
 }
 
 // ReadData safely extracts and unmarshals the response Data field into the specified type T.

@@ -7,13 +7,20 @@ type config struct {
 	includeDetails      bool
 }
 
+const (
+	// INTERNAL_SERVER_ERROR is the error code used when an internal server error occurs
+	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR"
+	// INTERNAL_SERVER_MESSAGE provides a descriptive message for internal server errors
+	INTERNAL_SERVER_MESSAGE = "An internal server error occurred"
+)
+
 // Option represents a configuration option for the httphelper package
 type Option func(*config)
 
 // DefaultConfig represents the default configuration
 var defaultConfig = config{
-	defaultErrorCode:    "INTERNAL_SERVER_ERROR",
-	defaultErrorMessage: "An internal server error occurred",
+	defaultErrorCode:    INTERNAL_SERVER_ERROR,
+	defaultErrorMessage: INTERNAL_SERVER_MESSAGE,
 	includeDetails:      true,
 }
 
@@ -31,8 +38,8 @@ func WithDefaultErrorMessage(msg string) Option {
 	}
 }
 
-// WithErrorDetails enables or disables including error details in responses
-func WithErrorDetails(include bool) Option {
+// WithIncludeDetails enables or disables including error details in responses
+func WithIncludeDetails(include bool) Option {
 	return func(c *config) {
 		c.includeDetails = include
 	}

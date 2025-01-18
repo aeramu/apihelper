@@ -31,3 +31,16 @@ func TestInvalidArgumentError(t *testing.T) {
 	assert.Equal(t, "message", httpErr.Message())
 	assert.Equal(t, http.StatusBadRequest, httpErr.HTTPStatus())
 }
+
+func TestWrap(t *testing.T) {
+	repo := func() error {
+		return exception.ErrorNotFound
+	}
+
+	repo2 := func() error {
+		return exception.Wrap(repo(), "message")
+	}
+
+	assert.True(t, errors.Is(repo(), exception.ErrorNotFound))
+	assert.True(t, errors.Is(repo2(), exception.ErrorNotFound))
+}

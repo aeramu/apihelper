@@ -73,3 +73,8 @@ func New(text string, opts ...ErrorOption) error {
 
 	return e
 }
+
+// Wrap wraps an error with a new exception
+func Wrap(err error, text string, opts ...ErrorOption) error {
+	return New(text, append(opts, WithError(err))...)
+}

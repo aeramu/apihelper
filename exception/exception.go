@@ -32,7 +32,7 @@ func (e *exception) Unwrap() error {
 }
 
 // ToHTTPStatus converts an AppError code to an HTTP status code
-func (e *exception) HTTPCode() int {
+func (e *exception) HTTPStatus() int {
 	switch e.status {
 	case CodeInternal:
 		return http.StatusInternalServerError // 500

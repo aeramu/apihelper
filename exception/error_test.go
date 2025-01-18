@@ -18,7 +18,7 @@ func TestSoftError_HTTP(t *testing.T) {
 
 	assert.Equal(t, "TEST_CODE", httpErr.Code())
 	assert.Equal(t, "message", httpErr.Message())
-	assert.Equal(t, http.StatusOK, httpErr.HTTPCode())
+	assert.Equal(t, http.StatusOK, httpErr.HTTPStatus())
 }
 
 func TestInvalidArgumentError(t *testing.T) {
@@ -29,5 +29,5 @@ func TestInvalidArgumentError(t *testing.T) {
 
 	assert.Equal(t, "TEST_CODE", httpErr.Code())
 	assert.Equal(t, "message", httpErr.Message())
-	assert.Equal(t, http.StatusBadRequest, httpErr.HTTPCode())
+	assert.Equal(t, http.StatusBadRequest, httpErr.HTTPStatus())
 }

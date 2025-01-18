@@ -29,18 +29,26 @@ const (
 
 var (
 	// Base errors
-	ErrorInvalidRequest    = newError(CodeInvalidRequest, "Invalid request", nil)
-	ErrorValidationFailed  = newError(CodeValidationFailed, "Validation failed", nil)
-	ErrorPermissionDenied  = newError(CodePermissionDenied, "Permission denied", nil)
-	ErrorNotFound          = newError(CodeNotFound, "Resource not found", nil)
-	ErrorAlreadyExists     = newError(CodeAlreadyExists, "Resource already exists", nil)
-	ErrorRaceCondition     = newError(CodeRaceCondition, "Race condition", nil)
-	ErrorResourceExhausted = newError(CodeResourceExhausted, "Resource exhausted", nil)
-	ErrorUnauthenticated   = newError(CodeUnauthenticated, "Unauthenticated", nil)
-	ErrorInternal          = newError(CodeInternal, "Internal server error", nil)
-	ErrorUnavailable       = newError(CodeUnavailable, "Service unavailable", nil)
-	ErrorDeadlineExceeded  = newError(CodeDeadlineExceeded, "Deadline exceeded", nil)
-	ErrorSoftError         = newError(CodeSoftError, "Soft error", nil)
+	ErrorInvalidRequest    = newError(CodeInvalidRequest, "invalid request")
+	ErrorValidationFailed  = newError(CodeValidationFailed, "validation failed")
+	ErrorPermissionDenied  = newError(CodePermissionDenied, "permission denied")
+	ErrorNotFound          = newError(CodeNotFound, "data not found")
+	ErrorAlreadyExists     = newError(CodeAlreadyExists, "data already exists")
+	ErrorRaceCondition     = newError(CodeRaceCondition, "race condition")
+	ErrorResourceExhausted = newError(CodeResourceExhausted, "resource exhausted")
+	ErrorUnauthenticated   = newError(CodeUnauthenticated, "unauthenticated")
+	ErrorInternal          = newError(CodeInternal, "internal server error")
+	ErrorUnavailable       = newError(CodeUnavailable, "service unavailable")
+	ErrorDeadlineExceeded  = newError(CodeDeadlineExceeded, "deadline exceeded")
+	ErrorSoftError         = newError(CodeSoftError, "soft error")
 
 	// Common errors
 )
+
+func newError(status string, message string) error {
+	return New(message,
+		WithStatus(status),
+		WithCode(status),
+		WithMessage(message),
+	)
+}

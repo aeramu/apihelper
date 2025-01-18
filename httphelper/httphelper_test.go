@@ -27,7 +27,11 @@ type testCase struct {
 
 var (
 	errGeneric     = errors.New("some error")
-	errException   = exception.InvalidRequest("TEST_ERROR", "TEST_MESSAGE", errors.New("some error"))
+	errException   = exception.New("some error",
+		exception.WithStatus(exception.CodeInvalidRequest),
+		exception.WithCode("TEST_ERROR"),
+		exception.WithMessage("TEST_MESSAGE"),
+	)
 	errHTTP        = errException.(httphelper.HTTPError)
 	defaultCode    = "DEFAULT_ERROR"
 	defaultMessage = "DEFAULT_MESSAGE"
@@ -116,7 +120,7 @@ func getTestCases() []testCase {
 	}
 }
 
-func TestRestyHelper(t *testing.T) {
+func TestHTTPHelper(t *testing.T) {
 	client := resty.New()
 	tests := getTestCases()
 

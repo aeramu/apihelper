@@ -11,24 +11,34 @@ import (
 )
 
 func TestSoftError_HTTP(t *testing.T) {
-	err := exception.SoftError("TEST_CODE", "message", nil)
+	err := exception.New("error",
+		exception.WithStatus(exception.CodeSoftError),
+		exception.WithCode("TEST_CODE"),
+		exception.WithMessage("message"),
+	)
 	var httpErr httphelper.HTTPError
 
 	errors.As(err, &httpErr)
 
 	assert.Equal(t, "TEST_CODE", httpErr.Code())
 	assert.Equal(t, "message", httpErr.Message())
+	assert.Equal(t, "error", httpErr.Error())
 	assert.Equal(t, http.StatusOK, httpErr.HTTPStatus())
 }
 
 func TestInvalidArgumentError(t *testing.T) {
-	err := exception.InvalidRequest("TEST_CODE", "message", nil)
+	err := exception.New("error",
+		exception.WithStatus(exception.CodeInvalidRequest),
+		exception.WithCode("TEST_CODE"),
+		exception.WithMessage("message"),
+	)
 	var httpErr httphelper.HTTPError
 
 	errors.As(err, &httpErr)
 
 	assert.Equal(t, "TEST_CODE", httpErr.Code())
 	assert.Equal(t, "message", httpErr.Message())
+	assert.Equal(t, "error", httpErr.Error())
 	assert.Equal(t, http.StatusBadRequest, httpErr.HTTPStatus())
 }
 

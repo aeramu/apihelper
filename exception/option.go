@@ -11,6 +11,9 @@ type ErrorOption func(*exception)
 var defaultOptions []ErrorOption = []ErrorOption{
 	WithStatus(CodeInternal),
 	WithCode(CodeInternal),
+	func(e *exception) {
+		e.message = e.s
+	},
 }
 
 // SetDefaultOptions sets the global default options that will be applied to all new exceptions

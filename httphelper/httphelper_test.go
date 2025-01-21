@@ -300,3 +300,56 @@ func exampleRestyImpl(t *testing.T, name string, ts *httptest.Server) {
 
 	fmt.Println(data)
 }
+
+func TestAsHTTPError(t *testing.T) {
+	err := exception.New("error",
+		exception.WithStatus(exception.CodeSoftError),
+		exception.WithCode("TEST_CODE"),
+		exception.WithMessage("message"),
+	)
+
+	httpErr, ok := httphelper.AsHTTPError(err)
+
+	assert.True(t, ok)
+	assert.Equal(t, "TEST_CODE", httpErr.Code())
+	assert.Equal(t, "message", httpErr.Message())
+	assert.Equal(t, "error", httpErr.Error())
+}
+
+func TestAsHTTPError_Join(t *testing.T) {
+	err := exception.New("error",
+		exception.WithStatus(exception.CodeSoftError),
+		exception.WithCode("TEST_CODE"),
+		exception.WithMessage("message"),
+	)
+
+	err = errors.Join(err, errors.New("error2"))
+
+	httpErr, ok := httphelper.AsHTTPError(err)
+	assert.True(t, ok)
+	assert.Equal(t, "TEST_CODE", httpErr.Code())
+	assert.Equal(t, http.StatusOK, httpErr.HTTPStatus())
+	assert.Equal(t, "message", httpErr.Message())
+	assert.Equal(t, "error", httpErr.Error())
+}
+
+func TestAsHTTPError_JoinException(t *testing.T) {
+	err := exception.New("error",
+		exception.WithStatus(exception.CodeSoftError),
+		exception.WithCode("TEST_CODE"),
+		exception.WithMessage("message"),
+	)
+
+	err = errors.Join(err, exception.New("error2",
+		exception.WithStatus(exception.CodeInternal),
+		exception.WithCode("TEST_CODE2"),
+		exception.WithMessage("message2"),
+	))
+
+	httpErr, ok := httphelper.AsHTTPError(err)
+	assert.True(t, ok)
+	assert.Equal(t, "TEST_CODE", httpErr.Code())
+	assert.Equal(t, http.StatusOK, httpErr.HTTPStatus())
+	assert.Equal(t, "message", httpErr.Message())
+	assert.Equal(t, "error", httpErr.Error())
+}
